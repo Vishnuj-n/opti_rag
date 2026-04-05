@@ -20,15 +20,19 @@ def _needs_trust_remote_code(model_name: str) -> bool:
 
 
 def download_models(cache_dir: str | None = None, offline_only: bool = False) -> None:
-    for model_name in MODELS:
-        print(f"[setup_models] downloading/caching: {model_name}")
+    total_models = len(MODELS)
+    for index, model_name in enumerate(MODELS, start=1):
+        print(
+            f"[setup_models] installing model {index}/{total_models}: {model_name} "
+            "(downloading or loading from cache)"
+        )
         SentenceTransformer(
             model_name,
             cache_folder=cache_dir,
             local_files_only=offline_only,
             trust_remote_code=_needs_trust_remote_code(model_name),
         )
-        print(f"[setup_models] ready: {model_name}")
+        print(f"[setup_models] installed and cached: {model_name}\n")
 
 
 def main() -> None:
