@@ -31,6 +31,11 @@ COPY . /app/env
 # For standalone builds, openenv will be installed via pyproject.toml
 WORKDIR /app/env
 
+# Keep model caches in the project directory so they can be copied to runtime image.
+ENV HF_HOME=/app/env/.hf_cache
+ENV TRANSFORMERS_CACHE=/app/env/.hf_cache/transformers
+ENV SENTENCE_TRANSFORMERS_HOME=/app/env/.hf_cache/sentence_transformers
+
 # Ensure uv is available (for local builds where base image lacks it)
 RUN if ! command -v uv >/dev/null 2>&1; then \
         curl -LsSf https://astral.sh/uv/install.sh | sh && \
@@ -54,6 +59,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
         uv sync --no-editable; \
     fi
 
+# Warm up local embedding models at build time so first runtime step is offline-ready.
+RUN uv run --no-sync python setup_models.py --cache-dir "${SENTENCE_TRANSFORMERS_HOME}"
+
 # Final runtime stage
 FROM ${BASE_IMAGE}
 
@@ -70,6 +78,11 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 # Set PYTHONPATH so imports work correctly
 ENV PYTHONPATH="/app/env:$PYTHONPATH"
+
+# Runtime cache paths (pre-populated during build stage).
+ENV HF_HOME=/app/env/.hf_cache
+ENV TRANSFORMERS_CACHE=/app/env/.hf_cache/transformers
+ENV SENTENCE_TRANSFORMERS_HOME=/app/env/.hf_cache/sentence_transformers
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \

@@ -29,7 +29,13 @@ uv venv
 uv sync
 ```
 
-3. Run locally (optional verification):
+3. Warm up local embedding models (one-time, recommended):
+
+```bash
+uv run python setup_models.py
+```
+
+4. Run locally (optional verification):
 
 ```bash
 uv run python server/opti_rag_environment.py
@@ -47,3 +53,5 @@ uv run uvicorn server.app:app --reload
 ```bash
 docker build -t opti_rag_env:latest -f envs/opti_rag_env/server/Dockerfile .
 ```
+
+The Docker image build runs `setup_models.py`, so embedding models are cached in-image and available at startup without first-step downloads.
