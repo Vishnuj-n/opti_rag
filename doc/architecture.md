@@ -62,7 +62,8 @@ The project also keeps the FastAPI submission interface requested in the origina
 ## Runtime Notes
 
 - Embedding models are local-only.
-- The Dockerfile preloads the embedding models during image build to reduce runtime downloads.
+- The Dockerfile preloads the embedding models during image build using `setup_models.py` so runtime starts without first-step downloads.
+- When building locally, exclude local virtual environments such as `.venv/` from the Docker context (for example via `.dockerignore`) to avoid invalid build artifacts.
 - The runtime path uses `HF_TOKEN` against the Hugging Face router endpoint and does not require a paid OpenAI API key.
 - The current local workspace still needs `faiss` available in the active interpreter for full smoke testing.
 

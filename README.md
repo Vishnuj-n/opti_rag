@@ -35,10 +35,14 @@ uv sync
 uv run python setup_models.py
 ```
 
+This script pre-downloads and caches the three embedding models used by the environment, printing progress like:
+- `installing model 1/3: sentence-transformers/all-MiniLM-L6-v2`
+- `installed and cached: sentence-transformers/all-MiniLM-L6-v2`
+
 4. Run locally (optional verification):
 
 ```bash
-uv run python server/opti_rag_environment.py
+uv run python server.opti_rag_environment.py
 uv run uvicorn server.app:app --reload
 ```
 
@@ -55,3 +59,5 @@ docker build -t opti_rag_env:latest -f envs/opti_rag_env/server/Dockerfile .
 ```
 
 The Docker image build runs `setup_models.py`, so embedding models are cached in-image and available at startup without first-step downloads.
+
+> If building from the local repository, ensure `.dockerignore` excludes local virtual environments such as `.venv/` so the build context does not include invalid local Python environments.
