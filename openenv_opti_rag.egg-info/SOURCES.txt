@@ -1,8 +1,13 @@
 README.md
+__init__.py
+client.py
+models.py
 pyproject.toml
 ./__init__.py
 ./client.py
+./embedding.py
 ./models.py
+./setup_models.py
 openenv_opti_rag.egg-info/PKG-INFO
 openenv_opti_rag.egg-info/SOURCES.txt
 openenv_opti_rag.egg-info/dependency_links.txt
