@@ -46,6 +46,16 @@ uv run python server.opti_rag_environment.py
 uv run uvicorn server.app:app --reload
 ```
 
+> Note: this service does not expose a root `/` page, so `GET /` will return `404 Not Found`. Use the API endpoints below or visit `/docs` for the interactive Swagger UI.
+
+### Local API endpoints
+
+- `GET /docs` — FastAPI Swagger UI
+- `GET /schema` — action/observation schema
+- `POST /reset` — reset the environment
+- `POST /step` — execute an action
+- `GET /state` — query the current state
+
 ## OpenEnv Integration (Final Step)
 
 1. Copy environment:
