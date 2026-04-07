@@ -25,8 +25,9 @@ Ship a hackathon-ready RAG optimization environment that:
 - Done: `Dockerfile` added
 - Done: root `inference.py` added
 - Done: local OpenEnv structure validation passed
-- In progress: runtime validation with the repo environment
-- Pending: full endpoint smoke test
+- Done: `setup_models.py` successfully downloaded and cached all 3 embedding models
+- In progress: endpoint smoke testing and runtime validation
+- Pending: full RL environment behavioral testing
 - Pending: reward quality tuning after runtime smoke test
 
 ## Sprint Backlog
@@ -41,15 +42,34 @@ Ship a hackathon-ready RAG optimization environment that:
 
 ### Sprint 2: Runtime Validation
 
-- [ ] Verify imports using the repo interpreter
+- [ ] Start local API server: `uv run uvicorn server.app:app --reload`
 - [ ] Verify `/reset` returns a valid initial state
-- [ ] Verify `/step` accepts valid actions
+- [ ] Verify `/step` accepts valid actions and returns observations
 - [ ] Verify `/state` reflects latest environment state
 - [ ] Verify `inference.py` runs without crashing
 - [ ] Verify `inference.py` runs with `HF_TOKEN` and no paid OpenAI key
 - [ ] Verify reward value type is float and always in `[0.0, 1.0]`
 
-### Sprint 3: Submission Hardening
+### Sprint 3: RL Environment Decision Point
+
+**Key Decisions Needed:**
+
+1. **Agent Architecture**: What RL algorithm? (e.g., PPO, DQO, RewardModel-guided, bandit-style)
+2. **Action Space**: What can the agent control?
+   - Query reformulation parameters?
+   - Retrieval depth/chunk count?
+   - Reranking thresholds?
+3. **Observation Space**: What state does the agent see?
+   - Query text, retrieved chunks, query embeddings?
+4. **Reward Signal**: Quantitative or learned reward model?
+5. **Training Loop**: Online in-environment or offline batch training?
+
+**Next Step**: Document the RL environment design (create `doc/rl_design.md`) with:
+- Agent algorithm choice and rationale
+- Action/observation/reward definitions
+- Sample training flow
+
+### Sprint 4: Submission Hardening
 
 - [ ] Confirm rewards stay in `[0, 1]`
 - [ ] Confirm logs match the required format exactly

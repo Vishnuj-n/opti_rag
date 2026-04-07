@@ -1,6 +1,7 @@
 einops>=0.8.2
 faiss-cpu>=1.13.2
 openenv-core[core]>=0.2.2
+python-dotenv>=1.2.2
 sentence-transformers>=5.3.0
 torch>=2.11.0
 

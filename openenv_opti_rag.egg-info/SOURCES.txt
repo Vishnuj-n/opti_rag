@@ -1,8 +1,10 @@
 README.md
 __init__.py
 client.py
+embedding.py
 models.py
 pyproject.toml
+setup_models.py
 ./__init__.py
 ./client.py
 ./embedding.py
